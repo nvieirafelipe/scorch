@@ -5,6 +5,7 @@ import (
   "log"
   "os"
   "io"
+  "encoding/json"
   "code.google.com/p/goauth2/oauth"
   "github.com/google/go-github/github"
   "github.com/nvieirafelipe/scorch/repository"
@@ -15,11 +16,12 @@ func Repositories(w http.ResponseWriter, req *http.Request) {
 
   githubRepos, _, err := githubClient().Repositories.ListByOrg(organization, nil)
   repositories := repository.RepositoriesFromGithub(githubRepos)
+  json, err := json.Marshal(repositories)
 
   if err != nil {
     log.Println("error: %v\n\n", err)
   } else {
-    io.WriteString(w, "repositories for "+req.URL.Query().Get(":organization_name")+"\n"+github.Stringify(repos))
+    io.WriteString(w, string(json))
   }
 }
 
