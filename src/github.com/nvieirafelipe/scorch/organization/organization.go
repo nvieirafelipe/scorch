@@ -7,12 +7,15 @@ import (
   "io"
   "code.google.com/p/goauth2/oauth"
   "github.com/google/go-github/github"
+  "github.com/nvieirafelipe/scorch/repository"
 )
 
 func Repositories(w http.ResponseWriter, req *http.Request) {
   organization := req.URL.Query().Get(":organization_name")
 
-  repos, _, err := githubClient().Repositories.ListByOrg(organization, nil)
+  githubRepos, _, err := githubClient().Repositories.ListByOrg(organization, nil)
+  repositories := repository.RepositoriesFromGithub(githubRepos)
+
   if err != nil {
     log.Println("error: %v\n\n", err)
   } else {
