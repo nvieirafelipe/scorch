@@ -7,7 +7,7 @@ import (
   "io"
   "encoding/json"
   "code.google.com/p/goauth2/oauth"
-  "github.com/google/go-github/github"
+  "github.com/nvieirafelipe/go-github/github"
   "github.com/nvieirafelipe/scorch/repository"
 )
 
