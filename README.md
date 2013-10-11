@@ -11,7 +11,7 @@ First you need to define this env vars:
 
 Install dependencies:
 
-    go get
+    go get github.com/nvieirafelipe/scorch
 
 Run the server with:
 
