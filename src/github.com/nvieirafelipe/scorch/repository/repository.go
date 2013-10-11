@@ -8,6 +8,7 @@ import (
   "encoding/json"
   "code.google.com/p/goauth2/oauth"
   "github.com/nvieirafelipe/go-github/github"
+  "github.com/nvieirafelipe/scorch/milestone"
 )
 
 type RepositoryCollection struct {
@@ -32,7 +33,7 @@ func WorkLeftVSTime(w http.ResponseWriter, req *http.Request) {
   organization := req.URL.Query().Get("organization")
 
   githubMilestones, _, err := githubClient().Milestones.List(organization, repository, nil)
-  milestones := MilestonesFromGithub(githubMilestones)
+  milestones := milestone.MilestonesFromGithub(githubMilestones)
   json, err := json.Marshal(milestones)
 
   if err != nil {
@@ -48,23 +49,4 @@ func githubClient() *github.Client {
   }
 
   return github.NewClient(t.Client())
-}
-
-type MilestoneCollection struct {
-  Milestones    []Milestone       `json:"milestones"`
-}
-
-type Milestone struct {
-  Title         string            `json:"title"`
-  URL           string            `json:"url"`
-  CreatedAt     github.Timestamp  `json:"created_at"`
-  DueOn         github.Timestamp  `json:"due_on"`
-}
-
-func MilestonesFromGithub(githubMilestones []github.Milestone) MilestoneCollection {
-  milestones := make([]Milestone, 0)
-  for _, milestone := range githubMilestones {
-    milestones = append(milestones, Milestone{URL: *milestone.URL, Title: *milestone.Title, CreatedAt: *milestone.CreatedAt, DueOn: *milestone.DueOn})
-  }
-  return MilestoneCollection{Milestones: milestones}
 }
