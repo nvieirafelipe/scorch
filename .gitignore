@@ -22,3 +22,9 @@ _testmain.go
 *.exe
 
 bin/*
+
+# Ignore 3rd-party libraries
+src/code.google.com
+src/github.com/bmizerany
+src/github.com/google
+src/github.com/nvieirafelipe/go-github
