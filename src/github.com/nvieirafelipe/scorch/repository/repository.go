@@ -33,7 +33,7 @@ func WorkLeftVSTime(w http.ResponseWriter, req *http.Request) {
   organization := req.URL.Query().Get("organization")
 
   githubMilestones, _, err := githubClient().Milestones.List(organization, repository, nil)
-  milestones := milestone.MilestonesFromGithub(githubMilestones)
+  milestones := milestone.MilestonesFromGithub(githubMilestones, githubClient(), organization, repository)
   json, err := json.Marshal(milestones)
 
   if err != nil {
