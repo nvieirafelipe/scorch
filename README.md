@@ -23,3 +23,8 @@ And then access the API with at `http://localhost:3000`
 
 ### Repositories `organizations/:organization_name/repositories`
 _Lists all repos by organization._
+
+### Work left VS Time `repositories/:repository_name/workleft-vs-time`
+#### params:
+     organization = organization_name
+_Lists all issues by repo._
