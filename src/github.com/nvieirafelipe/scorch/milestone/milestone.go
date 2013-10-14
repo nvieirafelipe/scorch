@@ -5,14 +5,14 @@ import (
 )
 
 type MilestoneCollection struct {
-  Milestones    []Milestone       `json:"milestones"`
+  Milestones  []Milestone       `json:"milestones"`
 }
 
 type Milestone struct {
-  Title         string            `json:"title"`
-  URL           string            `json:"url"`
-  CreatedAt     github.Timestamp  `json:"created_at"`
-  DueOn         github.Timestamp  `json:"due_on"`
+  Title       string            `json:"title"`
+  URL         string            `json:"url"`
+  CreatedAt   github.Timestamp  `json:"created_at"`
+  DueOn       github.Timestamp  `json:"due_on"`
 }
 
 func MilestonesFromGithub(githubMilestones []github.Milestone) MilestoneCollection {

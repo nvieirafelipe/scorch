@@ -12,7 +12,7 @@ import (
 )
 
 type RepositoryCollection struct {
-  Repositories  []Repository  `json:"repositories"`
+  Repositories  []Repository      `json:"repositories"`
 }
 
 type Repository struct {
