@@ -29,6 +29,7 @@ func RepositoriesFromGithub(githubRepos []github.Repository) RepositoryCollectio
 }
 
 func WorkLeftVSTime(w http.ResponseWriter, req *http.Request) {
+  w.Header().Set("Content-Type", "application/json")
   repository := req.URL.Query().Get(":repository_name")
   organization := req.URL.Query().Get("organization")
 

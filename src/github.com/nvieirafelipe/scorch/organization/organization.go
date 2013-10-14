@@ -12,6 +12,7 @@ import (
 )
 
 func Repositories(w http.ResponseWriter, req *http.Request) {
+  w.Header().Set("Content-Type", "application/json")
   organization := req.URL.Query().Get(":organization_name")
 
   githubRepos, _, err := githubClient().Repositories.ListByOrg(organization, nil)
