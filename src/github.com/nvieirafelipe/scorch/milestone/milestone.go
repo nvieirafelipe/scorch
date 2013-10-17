@@ -22,11 +22,15 @@ type Milestone struct {
 
 func MilestonesFromGithub(githubMilestones []github.Milestone, githubClient *github.Client, organization string, repository string) MilestoneCollection {
   milestones := make([]Milestone, 0)
+
   for _, milestone := range githubMilestones {
-    issues := issue.IssuesFromMilestone(githubClient, strconv.Itoa(*milestone.Number), organization, repository)
-    workLeftVsTime := workLeftVsTime(*milestone.CreatedAt, *milestone.DueOn, issues)
-    milestones = append(milestones, Milestone{Number: *milestone.Number, URL: *milestone.URL, Title: *milestone.Title, CreatedAt: *milestone.CreatedAt, DueOn: *milestone.DueOn, WorkLeftVSTime: workLeftVsTime})
+    if (milestone.DueOn != nil) {
+      issues := issue.IssuesFromMilestone(githubClient, strconv.Itoa(*milestone.Number), organization, repository)
+      workLeftVsTime := workLeftVsTime(*milestone.CreatedAt, *milestone.DueOn, issues)
+      milestones = append(milestones, Milestone{Number: *milestone.Number, URL: *milestone.URL, Title: *milestone.Title, CreatedAt: *milestone.CreatedAt, DueOn: *milestone.DueOn, WorkLeftVSTime: workLeftVsTime})
+    }
   }
+
   return MilestoneCollection{Milestones: milestones}
 }
 
@@ -48,10 +52,14 @@ func workLeftVsTime(createdAt github.Timestamp, dueOn github.Timestamp, issues [
 func issuesLeftAt(issues []issue.Issue, date time.Time) int {
   issuesLeft := 0
   for _, issue := range issues {
-    issueClosedDate := time.Date(issue.ClosedAt.Year(), issue.ClosedAt.Month(), issue.ClosedAt.Day(), 0, 0, 0, 0, time.UTC)
-    if issueClosedDate.After(date) {
+    if (issue.ClosedAt == nil || issueClosedAfter(issue, date)) {
       issuesLeft += 1
     }
   }
   return issuesLeft
+}
+
+func issueClosedAfter(issue issue.Issue, date time.Time) bool {
+  issueClosedDate := time.Date(issue.ClosedAt.Year(), issue.ClosedAt.Month(), issue.ClosedAt.Day(), 0, 0, 0, 0, time.UTC)
+  return issueClosedDate.After(date)
 }
