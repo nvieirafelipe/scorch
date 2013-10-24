@@ -37,12 +37,14 @@ func MilestonesFromGithub(githubMilestones []github.Milestone, githubClient *git
 func workLeftVsTime(createdAt github.Timestamp, dueOn github.Timestamp, issues []issue.Issue) []int {
   createdDate := time.Date(createdAt.Year(), createdAt.Month(), createdAt.Day(), 0, 0, 0, 0, time.UTC)
   dueOnDate := time.Date(dueOn.Year(), dueOn.Month(), dueOn.Day(), 0, 0, 0, 0, time.UTC)
+  today := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.UTC)
+
   workLeftVSTime := make([]int, 0)
   for currentDate := createdDate;; {
     issuesLeft := issuesLeftAt(issues, currentDate)
     workLeftVSTime = append(workLeftVSTime, issuesLeft)
     currentDate = currentDate.AddDate(0, 0, 1)
-    if dueOnDate.Before(currentDate) {
+    if today.Before(currentDate) || dueOnDate.Before(currentDate) {
       break;
     }
   }
